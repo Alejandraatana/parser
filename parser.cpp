@@ -156,10 +156,60 @@ void inicializaParser(Parser& parser)
 	parser.pila.push("A");
 }
 
+void match(Parser& parser,string entrada)
+{
+	if(parser.pila.top()==entrada)
+	{
+		parser.pila.pop();
+	}
+	else
+	{
+		cout<< "ERROR SINTACTICO" <<endl;
+		exit(1);
+	}
+}
+
+
+string startParser(Parser& parser,string entrada)
+{
+	if(parser.noTerminales.count(parser.pila.top())!=0)
+	{
+		pair<string,string> simbolos(parser.pila.top(),entrada);
+		vector<string> produccion;
+		if(parser.parserTable.count(simbolos)!=0)
+		{
+			produccion=parser.parserTable[simbolos];
+			parser.pila.pop();
+			while(produccion.size()!=0)
+			{
+				if(produccion.back()!="")
+				{
+					parser.pila.push(produccion.back());
+				}
+				produccion.pop_back();
+			}
+			return "";
+		}
+		else
+		{
+			cout<< "ERROR SINTACTICO" <<endl;
+			exit(1);
+		}
+	}
+	else
+	{
+		match(parser,entrada);
+		return "next";
+	}
+}
+
 
 int main()
 {
+	string a;
 	Parser parser;
 	inicializaParser(parser);
+	a=startParser(parser,"{");
+	cout<< a <<endl;
 	return 0;
 }
