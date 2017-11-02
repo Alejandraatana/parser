@@ -206,10 +206,7 @@ string startParser(Parser& parser,string entrada)
 
 int main()
 {
-	string a;
 	Parser parser;
 	inicializaParser(parser);
-	a=startParser(parser,"{");
-	cout<< a <<endl;
 	return 0;
 }
